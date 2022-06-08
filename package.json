@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@slnsw/react-sheet-music": "^0.0.6",
     "expo": "~43.0.2",
     "expo-av": "~10.1.3",
     "expo-sharing": "^10.1.1",
