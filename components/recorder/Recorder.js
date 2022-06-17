@@ -124,7 +124,12 @@ export default function Recorder() {
     const response = await axios.post(
       `${baseURL}/api/transcribe`,
       { 'audio': base64.encode(audioBase64) }
-    );
+    ).then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
     // We're done with the blob and file uploading, close and release it
     blob.close();
