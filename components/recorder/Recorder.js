@@ -61,11 +61,15 @@ export default function Recorder() {
             linearPCMIsFloat: false,
           },
         };
-
         const { recording } = await Audio.Recording.createAsync(
           RECORDING_OPTIONS_PRESET_HIGH_QUALITY
         );
+        const callback = (status) => {
+          console.log("hello status : ", status);
+        };
 
+        // ✨✨✨set the callback
+        recording.setOnRecordingStatusUpdate(callback);
         setRecording(recording);
       } else {
         setMessage("Please grant permission to app to access microphone");

@@ -5,7 +5,7 @@ import { Audio } from "expo-av";
 import * as Sharing from "expo-sharing";
 import Recorder from "./components/recorder/Recorder";
 import Sheet from "./components/sheet-music/Sheet";
-
+import Navigator from "./routes/homeStack";
 export default function App() {
   return <Sheet />;
 }
