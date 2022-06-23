@@ -1,11 +1,17 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { Audio } from "expo-av";
-import * as Sharing from "expo-sharing";
-import Recorder from "./components/recorder/Recorder";
-import Sheet from "./components/sheet-music/Sheet";
-import Navigator from "./routes/homeStack";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import Navigator from './src/router/HomeStack'
 export default function App() {
-  return <Sheet />;
+  return (
+    <Navigator/>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

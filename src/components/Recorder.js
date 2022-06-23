@@ -5,10 +5,10 @@ import { Audio } from "expo-av";
 import * as Sharing from "expo-sharing";
 import { RecordingOptions } from "expo-av/build/Audio";
 // import { Axios } from "axios";
-import axios, * as others from 'axios'; // correct way to import axios
+import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
 
-const baseURL = "http://192.168.1.6:5000"
+const baseURL = "http://192.168.1.6:5000";
 
 const styles = StyleSheet.create({
   container: {
@@ -125,15 +125,14 @@ export default function Recorder() {
 
     const audioBase64 = await blobToBase64(blob);
 
-    const response = await axios.post(
-      `${baseURL}/api/transcribe`,
-      { 'audio': base64.encode(audioBase64) }
-    ).then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    const response = await axios
+      .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     // We're done with the blob and file uploading, close and release it
     blob.close();
