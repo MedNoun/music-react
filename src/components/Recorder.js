@@ -10,7 +10,7 @@ import { withNavigation } from "react-navigation";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
 
-const baseURL = "http://192.168.1.6:5000";
+const baseURL = "http://10.0.0.24:5000";
 
 const styles = StyleSheet.create({
   container: {
