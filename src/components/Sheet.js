@@ -4,8 +4,9 @@ import { View } from "react-native";
 import Vex from "vexflow";
 import data from "../../assets/data";
 
-
-export default function Sheet() {
+export default function Sheet({ route, navigation }) {
+  const { response } = route.params;
+  console.log("here is the response ! ", response);
   const [context, stave] = useScore({
     contextSize: { x: 400, y: 100 }, // canvas size
     staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
@@ -97,7 +98,6 @@ export default function Sheet() {
 
   // Render voice
   Formatter.FormatAndDraw(context, stave, notes);
-  
 
   return <View>{context.render()}</View>;
 }

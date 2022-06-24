@@ -153,7 +153,9 @@ const Recorder = ({ navigation }) => {
     setWait(true);
     const response = await sendData(recording);
     setWait(false);
-    navigation.navigate("Sheet");
+    navigation.navigate("Sheet", {
+      response: response,
+    });
   }
 
   function getRecordingLines() {
