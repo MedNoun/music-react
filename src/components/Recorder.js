@@ -1,9 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, Image } from "react-native";
 import { Audio } from "expo-av";
 import * as Sharing from "expo-sharing";
-import { RecordingOptions } from "expo-av/build/Audio";
 
 import { withNavigation } from "react-navigation";
 // import { Axios } from "axios";
@@ -85,7 +84,7 @@ const Recorder = ({ navigation }) => {
     }
   }
 
-  async function sendData(recording){
+  async function sendData(recording) {
     // utitlity function to convert BLOB to BASE64
     const blobToBase64 = (blob) => {
       const reader = new FileReader();
@@ -129,7 +128,7 @@ const Recorder = ({ navigation }) => {
     return response;
   }
 
-  function stopRecording() {
+  async function stopRecording() {
     setRecording(undefined);
     await recording.stopAndUnloadAsync();
 
@@ -150,8 +149,10 @@ const Recorder = ({ navigation }) => {
     const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
     return `${minutesDisplay}:${secondsDisplay}`;
   }
-  function handleSend(recording) {
-    const response = sendData(recording);
+  async function handleSend(recording) {
+    setWait(true);
+    const response = await sendData(recording);
+    setWait(false);
     navigation.navigate("Sheet");
   }
 
@@ -168,7 +169,7 @@ const Recorder = ({ navigation }) => {
             onPress={() => recordingLine.sound.replayAsync()}
             title="Play"
           ></Button>
-          <Button title="Send" onPress={handleSend(recordingLine.file)} />
+          <Button title="Send" onPress={() => handleSend(recordingLine.file)} />
           <Button
             style={styles.button}
             onPress={() => Sharing.shareAsync(recordingLine.file)}
@@ -178,11 +179,22 @@ const Recorder = ({ navigation }) => {
       );
     });
   }
-  if(wait === true){
-      
-  }else{
+  if (wait) {
     return (
-    
+      <View style={{ dispay: "flex" }}>
+        <Image
+          style={{
+            width: 200,
+            height: 200,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          source={require("../../assets/splash.png")}
+        />
+      </View>
+    );
+  } else {
+    return (
       <View style={styles.container}>
         <Text>{message}</Text>
         <Button
@@ -194,6 +206,5 @@ const Recorder = ({ navigation }) => {
       </View>
     );
   }
-  
 };
 export default withNavigation(Recorder);

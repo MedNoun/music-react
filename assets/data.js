@@ -69,7 +69,7 @@ export default data = {
       measure: 1,
       pitch_spelled: "B4",
       pitch_integer: 71,
-      onset_tperformance_dataime: 13,
+      onset_time: 13,
       length: "qr",
       note_type: "rest",
     },
