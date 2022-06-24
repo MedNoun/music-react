@@ -4,11 +4,12 @@ import { View } from "react-native";
 import Vex from "vexflow";
 import data from "../../assets/data";
 
+
 export default function Sheet() {
   const [context, stave] = useScore({
-    contextSize: { x: 300, y: 300 }, // canvas size
+    contextSize: { x: 400, y: 100 }, // canvas size
     staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
-    staveWidth: 250, // ofc, stave width
+    staveWidth: 400, // ofc, stave width
     clef: "treble", // clef
     timeSig: data.timesig, // time signiture
   });
@@ -96,6 +97,7 @@ export default function Sheet() {
 
   // Render voice
   Formatter.FormatAndDraw(context, stave, notes);
+  
 
   return <View>{context.render()}</View>;
 }

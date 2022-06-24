@@ -4,6 +4,8 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { Audio } from "expo-av";
 import * as Sharing from "expo-sharing";
 import { RecordingOptions } from "expo-av/build/Audio";
+
+import { withNavigation } from "react-navigation";
 // import { Axios } from "axios";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
@@ -30,8 +32,7 @@ const styles = StyleSheet.create({
     margin: 16,
   },
 });
-
-export default function Recorder() {
+const Recorder = ({ navigation }) => {
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
   const [message, setMessage] = React.useState("");
@@ -161,6 +162,10 @@ export default function Recorder() {
             title="Play"
           ></Button>
           <Button
+            title="go to parking"
+            onPress={() => navigation.navigate("Sheet")}
+          />
+          <Button
             style={styles.button}
             onPress={() => Sharing.shareAsync(recordingLine.file)}
             title="Share"
@@ -181,4 +186,5 @@ export default function Recorder() {
       <StatusBar style="auto" />
     </View>
   );
-}
+};
+export default withNavigation(Recorder);
