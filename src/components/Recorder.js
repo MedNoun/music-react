@@ -70,7 +70,7 @@ const Recorder = ({ navigation }) => {
           RECORDING_OPTIONS_PRESET_HIGH_QUALITY
         );
         const callback = (status) => {
-          console.log("hello status : ", status);
+          console.log();
         };
 
         // ✨✨✨set the callback
@@ -129,7 +129,7 @@ const Recorder = ({ navigation }) => {
     const response = await axios
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
-        console.log(response);
+        console.log(response); // use response.data to send to Sheet component
       })
       .catch(function (error) {
         console.log(error);
