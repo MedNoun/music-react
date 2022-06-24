@@ -4,7 +4,17 @@ import { View } from "react-native";
 import Vex from "vexflow";
 import data from "../../assets/data";
 
-export default function Sheet() {
+export default function Sheet({ route, navigation }) {
+  const { response } = route.params;
+  console.log("here is the response ! ", response);
+  const [context, stave] = useScore({
+    contextSize: { x: 400, y: 100 }, // canvas size
+    staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
+    staveWidth: 400, // ofc, stave width
+    clef: "treble", // clef
+    timeSig: data.timesig, // time signiture
+  });
+
   // We have our context and stave. Now we add notes to it.
   const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } =
     Vex.Flow;
@@ -31,7 +41,7 @@ export default function Sheet() {
         stave = new Stave(5, 5 + i % 4 * 95, 365);
         
         // Connect it to the rendering context and draw!
-    		stave.setContext(context).draw();
+    	stave.setContext(context).draw();
       }
 
       var measure = measures[i];
