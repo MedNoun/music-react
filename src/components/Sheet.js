@@ -6,13 +6,6 @@ import data from "../../assets/data";
 
 export default function Sheet({ route, navigation }) {
   console.log("here is the response ! ", navigation.state.params);
-  const [context, stave] = useScore({
-    contextSize: { x: 400, y: 100 }, // canvas size
-    staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
-    staveWidth: 400, // ofc, stave width
-    clef: "treble", // clef
-    timeSig: data.timesig, // time signiture
-  });
 
   // We have our context and stave. Now we add notes to it.
   const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } =
@@ -23,11 +16,11 @@ export default function Sheet({ route, navigation }) {
   for (var i in measures) {
 
     // We likely aren't ready for multiple pages/contexts yet
-    if (i == 4) {break;}
+    if (i == 3) {break;}
 
     // JSON currently contains some measures with -1 values
     if (i >= 0) {
-      if (i % 4 == 0) {  
+      if (i % 3 == 0) {  
         var [context, stave] = useScore({
           contextSize: { x: 400, y: 300 }, // canvas size
           staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
@@ -37,7 +30,7 @@ export default function Sheet({ route, navigation }) {
         });
       } else {
         // Create a stave of width 365 on the canvas.
-        stave = new Stave(5, 5 + i % 4 * 95, 365);
+        stave = new Stave(5, 5 + i % 3 * 95, 365);
         
         // Connect it to the rendering context and draw!
     	stave.setContext(context).draw();
