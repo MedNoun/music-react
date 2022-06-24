@@ -183,13 +183,18 @@ const Recorder = ({ navigation }) => {
   }
   if (wait) {
     return (
-      <View style={{ dispay: "flex" }}>
+      <View
+        style={{
+          dispay: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Image
           style={{
+            marginTop: 300,
             width: 200,
             height: 200,
-            justifyContent: "center",
-            alignItems: "center",
           }}
           source={require("../../assets/splash.png")}
         />

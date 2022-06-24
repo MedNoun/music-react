@@ -5,8 +5,7 @@ import Vex from "vexflow";
 import data from "../../assets/data";
 
 export default function Sheet({ route, navigation }) {
-  const { response } = route.params;
-  console.log("here is the response ! ", response);
+  console.log("here is the response ! ", navigation.state.params);
   const [context, stave] = useScore({
     contextSize: { x: 400, y: 100 }, // canvas size
     staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
