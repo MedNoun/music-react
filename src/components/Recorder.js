@@ -36,6 +36,7 @@ const Recorder = ({ navigation }) => {
   const [recording, setRecording] = React.useState();
   const [recordings, setRecordings] = React.useState([]);
   const [message, setMessage] = React.useState("");
+  const [wait, setWait] = React.useState(false);
 
   async function startRecording() {
     try {
@@ -84,19 +85,7 @@ const Recorder = ({ navigation }) => {
     }
   }
 
-  async function stopRecording() {
-    setRecording(undefined);
-    await recording.stopAndUnloadAsync();
-
-    let updatedRecordings = [...recordings];
-    const { sound, status } = await recording.createNewLoadedSoundAsync();
-    updatedRecordings.push({
-      sound: sound,
-      duration: getDurationFormatted(status.durationMillis),
-      file: recording.getURI(),
-    });
-    setRecordings(updatedRecordings);
-
+  async function sendData(recording){
     // utitlity function to convert BLOB to BASE64
     const blobToBase64 = (blob) => {
       const reader = new FileReader();
@@ -110,7 +99,7 @@ const Recorder = ({ navigation }) => {
 
     // Fetch audio binary blob data
 
-    const audioURI = recording.getURI();
+    const audioURI = recording;
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -140,12 +129,30 @@ const Recorder = ({ navigation }) => {
     return response;
   }
 
+  function stopRecording() {
+    setRecording(undefined);
+    await recording.stopAndUnloadAsync();
+
+    let updatedRecordings = [...recordings];
+    const { sound, status } = await recording.createNewLoadedSoundAsync();
+    updatedRecordings.push({
+      sound: sound,
+      duration: getDurationFormatted(status.durationMillis),
+      file: recording.getURI(),
+    });
+    setRecordings(updatedRecordings);
+  }
+
   function getDurationFormatted(millis) {
     const minutes = millis / 1000 / 60;
     const minutesDisplay = Math.floor(minutes);
     const seconds = Math.round((minutes - minutesDisplay) * 60);
     const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
     return `${minutesDisplay}:${secondsDisplay}`;
+  }
+  function handleSend(recording) {
+    const response = sendData(recording);
+    navigation.navigate("Sheet");
   }
 
   function getRecordingLines() {
@@ -161,10 +168,7 @@ const Recorder = ({ navigation }) => {
             onPress={() => recordingLine.sound.replayAsync()}
             title="Play"
           ></Button>
-          <Button
-            title="go to parking"
-            onPress={() => navigation.navigate("Sheet")}
-          />
+          <Button title="Send" onPress={handleSend(recordingLine.file)} />
           <Button
             style={styles.button}
             onPress={() => Sharing.shareAsync(recordingLine.file)}
@@ -174,17 +178,22 @@ const Recorder = ({ navigation }) => {
       );
     });
   }
-
-  return (
-    <View style={styles.container}>
-      <Text>{message}</Text>
-      <Button
-        title={recording ? "Stop Recording" : "Start Recording"}
-        onPress={recording ? stopRecording : startRecording}
-      />
-      {getRecordingLines()}
-      <StatusBar style="auto" />
-    </View>
-  );
+  if(wait === true){
+      
+  }else{
+    return (
+    
+      <View style={styles.container}>
+        <Text>{message}</Text>
+        <Button
+          title={recording ? "Stop Recording" : "Start Recording"}
+          onPress={recording ? stopRecording : startRecording}
+        />
+        {getRecordingLines()}
+        <StatusBar style="auto" />
+      </View>
+    );
+  }
+  
 };
 export default withNavigation(Recorder);
