@@ -5,13 +5,14 @@ import Vex from "vexflow";
 import data from "../../assets/data";
 
 export default function Sheet({ route, navigation }) {
-  console.log("here is the response ! ", navigation.state.params);
+  const { response } = navigation.state.params.response;
+  // console.log("here is the response ! ", navigation.state.params.response);
 
   // We have our context and stave. Now we add notes to it.
   const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } =
     Vex.Flow;
   
-  var measures = group_by(data.notes, 'measure');
+  var measures = group_by(navigation.state.params.response.notes, 'measure');
 
   for (var i in measures) {
 

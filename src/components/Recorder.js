@@ -9,7 +9,7 @@ import { withNavigation } from "react-navigation";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
 
-const baseURL = "http://10.0.0.24:5000";
+const baseURL = "http://192.168.1.6:5000";
 
 const styles = StyleSheet.create({
   container: {
@@ -85,6 +85,8 @@ const Recorder = ({ navigation }) => {
   }
 
   async function sendData(recording) {
+
+    var apiResponse = '';
     // utitlity function to convert BLOB to BASE64
     const blobToBase64 = (blob) => {
       const reader = new FileReader();
@@ -117,7 +119,8 @@ const Recorder = ({ navigation }) => {
     const response = await axios
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
-        console.log(response); // use response.data to send to Sheet component
+        console.log(response.status); // use response.data to send to Sheet component
+        apiResponse = response.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -125,7 +128,7 @@ const Recorder = ({ navigation }) => {
 
     // We're done with the blob and file uploading, close and release it
     blob.close();
-    return response;
+    return apiResponse;
   }
 
   async function stopRecording() {
@@ -153,6 +156,7 @@ const Recorder = ({ navigation }) => {
     setWait(true);
     const response = await sendData(recording);
     setWait(false);
+    // console.log(response.data)
     navigation.navigate("Sheet", {
       response: response,
     });
