@@ -21,7 +21,7 @@ export default function Sheet({ route, navigation }) {
     }
   );
 
-  var measures = group_by(navigation.state.params.response.notes, "measure");
+  var measures = group_by(input.notes, "measure");
 
   for (var i in measures) {
     // We likely aren't ready for multiple pages/contexts yet
