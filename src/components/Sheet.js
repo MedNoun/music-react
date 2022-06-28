@@ -2,7 +2,6 @@ import { useScore } from "react-native-vexflow";
 import React from "react";
 import { View } from "react-native";
 import Vex from "vexflow";
-import data from "../../assets/data";
 
 export default function Sheet({ route, navigation }) {
   const { response } = navigation.state.params.response;
@@ -38,7 +37,7 @@ export default function Sheet({ route, navigation }) {
           staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
           staveWidth: 365, // ofc, stave width
           clef: "treble", // clef
-          timeSig: data.timesig, // time signiture
+          timeSig: input.timesig, // time signiture
         });
       } else {
         // Create a stave of width 365 on the canvas.
