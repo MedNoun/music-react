@@ -9,7 +9,7 @@ import { withNavigation } from "react-navigation";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
 
-const baseURL = "http://10.0.0.24:5000";
+const baseURL = "http://192.168.10.7:5000";
 
 const styles = StyleSheet.create({
   container: {
@@ -117,7 +117,10 @@ const Recorder = ({ navigation }) => {
     const response = await axios
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
-        console.log(response); // use response.data to send to Sheet component
+        setWait(false);
+        navigation.navigate("Sheet", {
+          response: response.data,
+        });
       })
       .catch(function (error) {
         console.log(error);
@@ -152,10 +155,6 @@ const Recorder = ({ navigation }) => {
   async function handleSend(recording) {
     setWait(true);
     const response = await sendData(recording);
-    setWait(false);
-    navigation.navigate("Sheet", {
-      response: response,
-    });
   }
 
   function getRecordingLines() {
