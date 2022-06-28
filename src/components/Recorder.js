@@ -9,11 +9,7 @@ import { withNavigation } from "react-navigation";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
 
-<<<<<<< HEAD
-const baseURL = "http://192.168.10.7:5000";
-=======
 const baseURL = "http://157.131.246.91:5000";
->>>>>>> 84af451858b3659e474872ed515a730badaa43bd
 
 const styles = StyleSheet.create({
   container: {
@@ -89,8 +85,7 @@ const Recorder = ({ navigation }) => {
   }
 
   async function sendData(recording) {
-
-    var apiResponse = '';
+    var apiResponse = "";
     // utitlity function to convert BLOB to BASE64
     const blobToBase64 = (blob) => {
       const reader = new FileReader();
@@ -131,6 +126,7 @@ const Recorder = ({ navigation }) => {
         apiResponse = response.data;
       })
       .catch(function (error) {
+        setWait(true);
         console.log(error);
       });
 
