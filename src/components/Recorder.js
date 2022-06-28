@@ -119,16 +119,16 @@ const Recorder = ({ navigation }) => {
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
         setWait(false);
-        if (!response.data) {
+        if (response.status != 200) {
           setWait(true);
         } else {
           navigation.navigate("Sheet", {
             response: response.data,
           });
-        }
 
-        console.log(response.status); // use response.data to send to Sheet component
-        apiResponse = response.data;
+          console.log(response.status); // use response.data to send to Sheet component
+          apiResponse = response.data;
+        }
       })
       .catch(function (error) {
         setWait(true);
