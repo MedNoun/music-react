@@ -118,20 +118,23 @@ const Recorder = ({ navigation }) => {
     const response = await axios
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
-        setWait(false);
-        if (response.status != 200) {
+        console.log('penis')
+        if (response.status === 200) {
+          console.log('dick')
           setWait(true);
-        } else {
           navigation.navigate("Sheet", {
             response: response.data,
           });
-
           console.log(response.status); // use response.data to send to Sheet component
           apiResponse = response.data;
+        } else {
+          console.log('boobs')
+          navigation.navigate("Recorder");
+          console.log(response.status);
         }
       })
       .catch(function (error) {
-        setWait(true);
+        navigation.navigate("Recorder");
         console.log(error);
       });
 
@@ -165,10 +168,12 @@ const Recorder = ({ navigation }) => {
     setWait(true);
     const response = await sendData(recording);
     setWait(false);
-    // console.log(response.data)
-    navigation.navigate("Sheet", {
-      response: response,
-    });
+      // console.log(response.data)
+    if (response.status === 200) {
+      navigation.navigate("Sheet", {
+        response: response,
+      });   
+    }
   }
 
   function getRecordingLines() {
