@@ -163,14 +163,11 @@ const Recorder = ({ navigation }) => {
   async function handleSend(recording) {
     setWait(true);
     const response = await sendData(recording);
-<<<<<<< HEAD
-=======
     setWait(false);
     // console.log(response.data)
     navigation.navigate("Sheet", {
       response: response,
     });
->>>>>>> 84af451858b3659e474872ed515a730badaa43bd
   }
 
   function getRecordingLines() {
