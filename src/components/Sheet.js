@@ -4,23 +4,24 @@ import { View } from "react-native";
 import Vex from "vexflow";
 import data from "../../assets/data";
 
-export default function Sheet(props) {
-  const ss = props.navigation.state.params.response;
+export default function Sheet({ route, navigation }) {
+  const { response } = navigation.state.params.response;
+  // console.log("here is the response ! ", navigation.state.params.response);
 
   // We have our context and stave. Now we add notes to it.
   const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = Vex.Flow;
 
-  var measures = group_by(ss.notes, "measure");
+  var measures = group_by(navigation.state.params.response.notes, "measure");
 
   for (var i in measures) {
     // We likely aren't ready for multiple pages/contexts yet
-    if (i == 4) {
+    if (i == 3) {
       break;
     }
 
     // JSON currently contains some measures with -1 values
     if (i >= 0) {
-      if (i % 4 == 0) {
+      if (i % 3 == 0) {
         var [context, stave] = useScore({
           contextSize: { x: 400, y: 300 }, // canvas size
           staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
@@ -30,7 +31,7 @@ export default function Sheet(props) {
         });
       } else {
         // Create a stave of width 365 on the canvas.
-        stave = new Stave(5, 5 + (i % 4) * 95, 365);
+        stave = new Stave(5, 5 + (i % 3) * 95, 365);
 
         // Connect it to the rendering context and draw!
         stave.setContext(context).draw();
@@ -49,7 +50,7 @@ export default function Sheet(props) {
     var group_notes = {};
     for (var i in notes) {
       if (!i.length) {
-       ; i.length = "q";
+        i.length = "q";
       }
       var note = notes[i];
       var val = note[prop];

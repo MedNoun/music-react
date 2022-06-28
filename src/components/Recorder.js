@@ -9,7 +9,11 @@ import { withNavigation } from "react-navigation";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
 
+<<<<<<< HEAD
 const baseURL = "http://192.168.10.7:5000";
+=======
+const baseURL = "http://157.131.246.91:5000";
+>>>>>>> 84af451858b3659e474872ed515a730badaa43bd
 
 const styles = StyleSheet.create({
   container: {
@@ -85,6 +89,8 @@ const Recorder = ({ navigation }) => {
   }
 
   async function sendData(recording) {
+
+    var apiResponse = '';
     // utitlity function to convert BLOB to BASE64
     const blobToBase64 = (blob) => {
       const reader = new FileReader();
@@ -121,6 +127,8 @@ const Recorder = ({ navigation }) => {
         navigation.navigate("Sheet", {
           response: response.data,
         });
+        console.log(response.status); // use response.data to send to Sheet component
+        apiResponse = response.data;
       })
       .catch(function (error) {
         console.log(error);
@@ -128,7 +136,7 @@ const Recorder = ({ navigation }) => {
 
     // We're done with the blob and file uploading, close and release it
     blob.close();
-    return response;
+    return apiResponse;
   }
 
   async function stopRecording() {
@@ -155,6 +163,14 @@ const Recorder = ({ navigation }) => {
   async function handleSend(recording) {
     setWait(true);
     const response = await sendData(recording);
+<<<<<<< HEAD
+=======
+    setWait(false);
+    // console.log(response.data)
+    navigation.navigate("Sheet", {
+      response: response,
+    });
+>>>>>>> 84af451858b3659e474872ed515a730badaa43bd
   }
 
   function getRecordingLines() {
