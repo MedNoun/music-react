@@ -119,9 +119,14 @@ const Recorder = ({ navigation }) => {
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
         setWait(false);
-        navigation.navigate("Sheet", {
-          response: response.data,
-        });
+        if (!response.data) {
+          setWait(true);
+        } else {
+          navigation.navigate("Sheet", {
+            response: response.data,
+          });
+        }
+
         console.log(response.status); // use response.data to send to Sheet component
         apiResponse = response.data;
       })
