@@ -11,6 +11,17 @@ export default function Sheet({ route, navigation }) {
   // We have our context and stave. Now we add notes to it.
   const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = Vex.Flow;
 
+  var input = response;
+  
+  input.notes.sort(
+    function(a, b) {
+      if (a.onset_time === b.onset_time) {
+        return a.pitch_integer - b.pitch_integer;
+      }
+      return a.onset_time > b.onset_time ? 1 : -1;
+    }
+  );
+
   var measures = group_by(navigation.state.params.response.notes, "measure");
 
   for (var i in measures) {
