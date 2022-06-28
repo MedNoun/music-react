@@ -115,6 +115,7 @@ const Recorder = ({ navigation }) => {
 
     const audioBase64 = await blobToBase64(blob);
 
+    var apiResponse = "";
     const response = await axios
       .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
       .then(function (response) {
@@ -122,11 +123,11 @@ const Recorder = ({ navigation }) => {
         if (response.status === 200) {
           console.log('dick')
           setWait(true);
-          navigation.navigate("Sheet", {
-            response: response.data,
-          });
           console.log(response.status); // use response.data to send to Sheet component
           apiResponse = response.data;
+          navigation.navigate("Sheet", {
+            response: apiResponse,
+          })
         } else {
           console.log('boobs')
           navigation.navigate("Recorder");

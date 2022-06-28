@@ -4,15 +4,12 @@ import { View } from "react-native";
 import Vex from "vexflow";
 
 export default function Sheet({ route, navigation }) {
-  const { response } = navigation.state.params.response;
-  // console.log("here is the response ! ", navigation.state.params.response);
+  const response = navigation.state.params.response;
 
   // We have our context and stave. Now we add notes to it.
   const { Renderer, Stave, StaveNote, Voice, Formatter, Accidental } = Vex.Flow;
 
-  var input = response;
-  
-  input.notes.sort(
+  response.notes.sort(
     function(a, b) {
       if (a.onset_time === b.onset_time) {
         return a.pitch_integer - b.pitch_integer;
@@ -21,7 +18,7 @@ export default function Sheet({ route, navigation }) {
     }
   );
 
-  var measures = group_by(input.notes, "measure");
+  var measures = group_by(response.notes, "measure");
 
   for (var i in measures) {
     // We likely aren't ready for multiple pages/contexts yet
@@ -37,7 +34,7 @@ export default function Sheet({ route, navigation }) {
           staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
           staveWidth: 365, // ofc, stave width
           clef: "treble", // clef
-          timeSig: input.timesig, // time signiture
+          timeSig: response.timesig, // time signiture
         });
       } else {
         // Create a stave of width 365 on the canvas.
@@ -63,16 +60,17 @@ export default function Sheet({ route, navigation }) {
         i.length = "q";
       }
       var note = notes[i];
-      var val = note[prop];
+      // TODO: remove this ugly hack
+      var val = parseFloat(note[prop]) * 100000;
       group_notes[val] = group_notes[val] || [];
       group_notes[val].push(note);
     }
-    console.log(group_notes);
     return group_notes;
   }
 
   function create_notes(chords) {
     var notes = [];
+
     for (var i in chords) {
       var chord = chords[i];
 
