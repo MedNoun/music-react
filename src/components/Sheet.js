@@ -90,17 +90,28 @@ export default function Sheet({ route, navigation }) {
           note.setKeyStyle(0, { fillStyle: "yellow" });
           // I will assume that I am given the onset of the previous note
         }
+        if (n.pitch_spelled.includes('#')) {
+          note.addModifier(0, new Accidental("#"));
+        } else if (n.pitch_spelled.includes('b')) {
+          note.addModifier(0, new Accidental("b"));
+        }
       } else {
         for (var j in chord) {
           var n = chord[j];
+          var idx = parseInt(j);
 
           if (n.note_type == "incorrect") {
-            note.setKeyStyle(j, { fillStyle: "red" });
+            note.setKeyStyle(idx, { fillStyle: "red" });
           } else if (n.note_type == "missing") {
-            note.setKeyStyle(j, { fillStyle: "blue" });
+            note.setKeyStyle(idx, { fillStyle: "blue" });
           } else if (n.note_type == "extra") {
-            note.setKeyStyle(j, { fillStyle: "yellow" });
+            note.setKeyStyle(idx, { fillStyle: "yellow" });
             // I will assume that I am given the onset of the previous note
+          }
+          if (n.pitch_spelled.includes('#')) {
+            note.addModifier(idx, new Accidental("#"));
+          } else if (n.pitch_spelled.includes('b')) {
+            note.addModifier(idx, new Accidental("b"));
           }
         }
       }
