@@ -90,9 +90,9 @@ export default function Sheet({ route, navigation }) {
           note.setKeyStyle(0, { fillStyle: "yellow" });
           // I will assume that I am given the onset of the previous note
         }
-        if (n.pitch_spelled.includes('#')) {
+        if (n.pitch_spelled.includes("#")) {
           note.addModifier(0, new Accidental("#"));
-        } else if (n.pitch_spelled.includes('b')) {
+        } else if (n.pitch_spelled.includes("b")) {
           note.addModifier(0, new Accidental("b"));
         }
       } else {
@@ -108,9 +108,9 @@ export default function Sheet({ route, navigation }) {
             note.setKeyStyle(idx, { fillStyle: "yellow" });
             // I will assume that I am given the onset of the previous note
           }
-          if (n.pitch_spelled.includes('#')) {
+          if (n.pitch_spelled.includes("#")) {
             note.addModifier(idx, new Accidental("#"));
-          } else if (n.pitch_spelled.includes('b')) {
+          } else if (n.pitch_spelled.includes("b")) {
             note.addModifier(idx, new Accidental("b"));
           }
         }
