@@ -8,6 +8,7 @@ import { withNavigation } from "react-navigation";
 // import { Axios } from "axios";
 import axios, * as others from "axios"; // correct way to import axios
 import base64 from "react-native-base64";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const baseURL = "http://157.131.246.91:5000";
 
@@ -36,6 +37,32 @@ const Recorder = ({ navigation }) => {
   const [recordings, setRecordings] = React.useState([]);
   const [message, setMessage] = React.useState("");
   const [wait, setWait] = React.useState(false);
+
+  // for reference picker
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState(null);
+  const [items, setItems] = React.useState([]);
+
+  async function getRefs() {
+    const response = await axios
+      .get(`${baseURL}/api/references`, { 'boof': 'bunk' })
+      .then(function (response) {
+        if (response.status === 200) {
+          var references = []
+          for (rd in response.data.reference_files) {
+            var r = {label: response.data.reference_files[rd], value: response.data.reference_files[rd]}
+            references.push(r)
+          }
+          setItems(references);
+        } else {
+          console.log(response.status);
+        }
+      })
+      .catch(function (error) {
+        navigation.navigate("Recorder");
+        console.log(error);
+      });
+  }
 
   async function startRecording() {
     try {
@@ -117,7 +144,7 @@ const Recorder = ({ navigation }) => {
 
     var apiResponse = "";
     const response = await axios
-      .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64) })
+      .post(`${baseURL}/api/transcribe`, { audio: base64.encode(audioBase64), reference: value })
       .then(function (response) {
         console.log('penis')
         if (response.status === 200) {
@@ -178,6 +205,7 @@ const Recorder = ({ navigation }) => {
   }
 
   function getRecordingLines() {
+    getRefs();
     return recordings.map((recordingLine, index) => {
       return (
         <View key={index} style={styles.row}>
@@ -223,6 +251,14 @@ const Recorder = ({ navigation }) => {
     return (
       <View style={styles.container}>
         <Text>{message}</Text>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+        />
         <Button
           title={recording ? "Stop Recording" : "Start Recording"}
           onPress={recording ? stopRecording : startRecording}
