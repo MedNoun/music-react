@@ -3,7 +3,7 @@ Music Moderation team - cohort of April-June 2022
 
 (Peter Chudinov, Joseph Aquino, Mohamed Sahnoun)
 
-### About this app:
+## About this app:
 
 This app will record and evaluate your piano performance by comparing it to a reference `midi` file of your choice.
 
@@ -12,6 +12,10 @@ This app will record and evaluate your piano performance by comparing it to a re
 1. The audio recording of you playing the piano is processed using Automatic Music Transcription deep learning algorithm and converted into a `midi` file
 2. That `midi` file is aligned to and compared to a reference file
 3. Results of comparison are digested into a human-readable format and displayed on screen
+
+### Research notes:
+
+https://mednoun.notion.site/Music-Moderation-Fellowship-AI-Cohort-23-cd83ce77d367465e93c755bca6c41113
 
 ## Steps for setting up the app:
 
