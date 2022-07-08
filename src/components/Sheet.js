@@ -20,17 +20,19 @@ export default function Sheet({ route, navigation }) {
 
   var measures = group_by(response.notes, "measure");
 
-  for (var i in measures) {
+  var mpp = 4; // measures per page
+
+  for (var i of sorted_k(measures)) {
     // We likely aren't ready for multiple pages/contexts yet
-    if (i == 3) {
+    if (i == mpp) {
       break;
     }
 
     // JSON currently contains some measures with -1 values
     if (i >= 0) {
-      if (i % 3 == 0) {
+      if (i % mpp == 0) {
         var [context, stave] = useScore({
-          contextSize: { x: 400, y: 300 }, // canvas size
+          contextSize: { x: 400, y: 680 }, // canvas size
           staveOffset: { x: 5, y: 5 }, // starting point of the staff relative to the top-right corner of canvas
           staveWidth: 365, // ofc, stave width
           clef: "treble", // clef
@@ -38,7 +40,7 @@ export default function Sheet({ route, navigation }) {
         });
       } else {
         // Create a stave of width 365 on the canvas.
-        stave = new Stave(5, 5 + (i % 3) * 95, 365);
+        stave = new Stave(5, 5 + (i % mpp) * 165, 365);
 
         // Connect it to the rendering context and draw!
         stave.setContext(context).draw();
@@ -53,15 +55,14 @@ export default function Sheet({ route, navigation }) {
     }
   }
 
+  function sorted_k(dict) {
+    return Object.keys(dict).map(Number).sort((a, b) => a - b);
+  }
+
   function group_by(notes, prop) {
     var group_notes = {};
-    for (var i in notes) {
-      if (!i.length) {
-        i.length = "q";
-      }
-      var note = notes[i];
-      // TODO: remove this ugly hack
-      var val = parseFloat(note[prop]) * 100000;
+    for (var note of notes) {
+      var val = note[prop];
       group_notes[val] = group_notes[val] || [];
       group_notes[val].push(note);
     }
@@ -71,7 +72,7 @@ export default function Sheet({ route, navigation }) {
   function create_notes(chords) {
     var notes = [];
 
-    for (var i in chords) {
+    for (var i of sorted_k(chords)) {
       var chord = chords[i];
 
       var note = new StaveNote({
@@ -96,22 +97,21 @@ export default function Sheet({ route, navigation }) {
           note.addModifier(0, new Accidental("b"));
         }
       } else {
-        for (var j in chord) {
+        for (var j = 0; j < chord.length; j++) {
           var n = chord[j];
-          var idx = parseInt(j);
 
           if (n.note_type == "incorrect") {
-            note.setKeyStyle(idx, { fillStyle: "red" });
+            note.setKeyStyle(j, { fillStyle: "red" });
           } else if (n.note_type == "missing") {
-            note.setKeyStyle(idx, { fillStyle: "blue" });
+            note.setKeyStyle(j, { fillStyle: "blue" });
           } else if (n.note_type == "extra") {
-            note.setKeyStyle(idx, { fillStyle: "yellow" });
+            note.setKeyStyle(j, { fillStyle: "yellow" });
             // I will assume that I am given the onset of the previous note
           }
           if (n.pitch_spelled.includes("#")) {
-            note.addModifier(idx, new Accidental("#"));
+            note.addModifier(j, new Accidental("#"));
           } else if (n.pitch_spelled.includes("b")) {
-            note.addModifier(idx, new Accidental("b"));
+            note.addModifier(j, new Accidental("b"));
           }
         }
       }
